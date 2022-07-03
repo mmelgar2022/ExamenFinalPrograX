@@ -1,83 +1,84 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Autofac;
+using Interfaces.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.OpenApi.Models;
 
 namespace ApiWeb
 {
     public class Startup : Controller
     {
-        // GET: Starttop
-        public ActionResult Index()
+        public Startup(IConfiguration configuration)
         {
-            return View();
+            Configuration = configuration;
         }
 
-        // GET: Starttop/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        public IConfiguration Configuration { get; }
 
-        // GET: Starttop/Create
-        public ActionResult Create()
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
         {
-            return View();
-        }
-
-        // POST: Starttop/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
+            SqlConnection conn = new SqlConnection
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+                ConnectionString = @"Server=.;Initial Catalog=DbFinalPrograX;Trusted_Connection=true;TrustServerCertificate=True"
+            };
+            conn.Open();
+            //builder.RegisterInstance<IDbConnection>(conn);
+            //this.ApplicationContainer = builder.Build();
+
+            services.AddSingleton<Iiva, Ivaservicios>();
+            services.AddSingleton<Iisr,Isrservicios>();
+            services.AddSingleton<ICliente,ClienteServicios>();
+            services.AddSingleton<IAhorro, Ahorroservicios>();
+            services.AddSingleton<ICalculos, Calculosservicios>();
+
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
             {
-                return View();
-            }
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiWeb", Version = "v1" });
+            });
+        }
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new ModDI());
+            #region AutoFac Modulo
+            builder.RegisterModule(new ModDI());
+            #endregion
+            #region AutoFac Direct REgistration
+            //builder.RegisterType<AlumnoService>().As<IAlumno>();
+            #endregion
+
+
         }
 
-        // GET: Starttop/Edit/5
-        public ActionResult Edit(int id)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            return View();
-        }
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WepApi v1"));
+            }
 
-        // POST: Starttop/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            app.UseHttpsRedirection();
 
-        // GET: Starttop/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+            app.UseSentryTracing();
 
-        // POST: Starttop/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllerRoute(
+            //        name: "default",
+            //        pattern: "{controller=ClientesImpuestosController}");
+            //});
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+                endpoints.MapControllers();
+            });
         }
-    }
-}
