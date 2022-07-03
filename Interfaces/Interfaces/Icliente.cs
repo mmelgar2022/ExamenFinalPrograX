@@ -9,21 +9,14 @@ using System.Threading.Tasks;
 
 namespace Interfaces.Interfaces
 {
-   public interface Icliente
+   public interface ICliente
     {
-        interface ICrearCliente
-        {
-            void crear(Clientes cliente);
-        }
-        interface IEditarCliente
-        {
-            void editar(Clientes cliente);
-        }
-        interface IEliminarCliente
-        {
-            void eliminar(Clientes cliente);
-        }
-
+        Clientes GetCliente();
+        List<Clientes> GetClientes(System.Data.IDbConnection dbConnection);
+        List<Clientes> GetClienteByFirstLetter(char FirstLetter);
+        void SetCliente(Clientes cliente);
+        void DeleteCliente(int id);
+        List<Clientes> EditCliente(System.Data.IDbConnection dbConnection, int idCliente);
 
 
 
