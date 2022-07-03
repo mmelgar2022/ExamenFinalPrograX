@@ -13,7 +13,7 @@ namespace Servicios.Servicios
     {
         public List<Iva> calcularIVA(IDbConnection dbConnection, int id_cliente)
         {
-            var cliente = dbConnection.Query<Clientes>("SELECT * FROM [VW_IMPUESTO_CLIENTE] WHERE id_cliente = " + id_cliente);
+            var cliente = dbConnection.Query<Clientes>("SELECT * FROM [Vista_Impuesto] WHERE id_cliente = " + id_cliente);
             double IVA;
 
             foreach (var item in cliente)
@@ -22,11 +22,11 @@ namespace Servicios.Servicios
 
                 IVA = salario * 0.12;
 
-                dbConnection.Query<Iva>("INSERT INTO Calculo_Cliente (id_cliente, id_rubro, Impuesto, Descripcion, Total) VALUES ("
-                                                    + item.id_cliente + "," + item.id_rubro + "," + "'IVA'" + "," + "'Calculo de IVA'" + "," + IVA + ")");
+                dbConnection.Query<Iva>("INSERT INTO Calculo_Cliente (id_cliente, id_iva, mpnto) VALUES ("
+                                                    + item.id_cliente + "," + item.id_iva + "," + "'IVA'" + "," + "'Calculo de IVA'" + "," + IVA + ")");
             }
 
-            return (List<Iva>)dbConnection.Query<Iva>("SELECT * FROM  Calculo_Cliente WHERE id_cliente = " + id_cliente);
+            return (List<Iva>)dbConnection.Query<Iva>("SELECT * FROM  Calculos WHERE id_cliente = " + id_cliente);
         }
     }
 }

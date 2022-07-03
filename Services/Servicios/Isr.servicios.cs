@@ -13,7 +13,7 @@ namespace Servicios.Servicios
     {
         public List<Isr> calcularISR(IDbConnection dbConnection, int id_cliente)
         {
-            var cliente = dbConnection.Query<Clientes>("SELECT * FROM [VW_IMPUESTO_CLIENTE] WHERE id_cliente = " + id_cliente);
+            var cliente = dbConnection.Query<Clientes>("SELECT * FROM [Vista_Impuesto] WHERE id_cliente = " + id_cliente);
             double ISR;
 
             foreach (var item in cliente)
@@ -29,13 +29,13 @@ namespace Servicios.Servicios
                     ISR = salario * 0.07;
                 }
 
-                dbConnection.Query<Isr>("INSERT INTO Calculo_Cliente (id_cliente, id_rubro, Impuesto, Descripcion, Total) VALUES ("
-                                                    + item.id_cliente + "," + item.id_rubro + "," + "'ISR'" + "," + "'Calculo de ISR'" + "," + ISR + ")");
+                dbConnection.Query<Isr>("INSERT INTO Calculo_Cliente (id_isr , id_cliente, monto) VALUES ("
+                                                    + item.id_cliente + "," + item.id_isr + "," + "'ISR'" + "," + "'Calculo de ISR'" + "," + ISR + ")");
             }
 
-            return (List<Isr>)dbConnection.Query<Isr>("SELECT * FROM  Calculo_Cliente WHERE id_cliente = " + id_cliente);
+            return (List<Isr>)dbConnection.Query<Isr>("SELECT * FROM  Calculos WHERE id_cliente = " + id_cliente);
         }
 
     }
 }
-}
+
