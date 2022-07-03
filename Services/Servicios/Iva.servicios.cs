@@ -26,7 +26,7 @@ namespace Servicios.Servicios
                                                     + item.id_cliente + "," + item.id_iva + "," + "'IVA'" + "," + "'Calculo de IVA'" + "," + IVA + ")");
             }
 
-            return (List<Iva>)dbConnection.Query<Iva>("SELECT * FROM  Calculos WHERE id_cliente = " + id_cliente);
+            return (List<Iva>)dbConnection.Query<Iva>("SELECT * FROM  tbl_Calculos WHERE id_cliente = " + id_cliente);
         }
     }
 }

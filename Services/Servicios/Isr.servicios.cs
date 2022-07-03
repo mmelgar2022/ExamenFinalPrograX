@@ -33,7 +33,7 @@ namespace Servicios.Servicios
                                                     + item.id_cliente + "," + item.id_isr + "," + "'ISR'" + "," + "'Calculo de ISR'" + "," + ISR + ")");
             }
 
-            return (List<Isr>)dbConnection.Query<Isr>("SELECT * FROM  Calculos WHERE id_cliente = " + id_cliente);
+            return (List<Isr>)dbConnection.Query<Isr>("SELECT * FROM  tbl_Calculo WHERE id_cliente = " + id_cliente);
         }
 
     }
