@@ -13,8 +13,7 @@ namespace Modelos.Modelos
         public string apellido { get; set; }
         public string direccion { get; set; }
         public string dpi { get; set; }
-        public int idrubros { get; set; }
-
+       
         public double sueldo { get; set; }
 
     }

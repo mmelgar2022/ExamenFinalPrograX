@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Modelos.Modelos
 {
-    public class Rubros
+    public class IVA
     {
-        public int idRubros { get; set; }
-        public string tipo { get; set; }
-        public float porcentaje { get; set; }
+        public int id_iva { get; set; }
+        public int id_cliente { get; set; }
+        public double monto { get; set; }
+       
     }
 }
-
