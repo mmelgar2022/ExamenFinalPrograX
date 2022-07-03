@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Servicios.Servicios
 {
-    internal class Isr : Iisr
+    public class Isr : Iisr
 
     {
         public List<Isr> calcularISR(IDbConnection dbConnection, int id_cliente)
@@ -36,6 +36,10 @@ namespace Servicios.Servicios
             return (List<Isr>)dbConnection.Query<Isr>("SELECT * FROM  tbl_Calculo WHERE id_cliente = " + id_cliente);
         }
 
+        public double calcularISR(Modelos.Modelos.Clientes cliente)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
